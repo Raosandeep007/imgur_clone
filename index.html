@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/home.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/posts.css" />
+
+    <title>Document</title>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <div class="navbar"></div>
+      <h1 class="message">
+        I'm here to browse Imgur and chew bubblegum...and I'm all outta gum
+      </h1>
+      <div class="bar">
+        <h1 class="exploreTags">EXPLORE TAGS</h1>
+      </div>
+    </header>
+
+    <main>
+      <div class="posts"></div>
+    </main>
+  </body>
+</html>
+<script
+  src="https://kit.fontawesome.com/e425a0bb3a.js"
+  crossorigin="anonymous"
+></script>
+<script type="module">
+  import Posts from "./components/posts.js";
+  import CatBar from "./components/catbar.js";
+  import Navbar from "./components/navbar.js";
+  async function getDataForTags() {
+    let res = await fetch(
+      "https://api.imgur.com/3/tags?client_id=546c25a59c58ad7"
+    );
+    let d = await res.json();
+    CatBar(document.querySelector(".bar"), d.data.tags);
+  }
+  getDataForTags();
+  document.querySelector(".navbar").innerHTML = Navbar();
+  let page = 1;
+  async function getDataForPosts(page) {
+    let res = await fetch(
+      `https://api.imgur.com/post/v1/posts?client_id=546c25a59c58ad7&filter%5Bsection%5D=eq%3Ahot&include=adtiles%2Cadconfig%2Ccover%2Cviral&location=desktophome&page=${page}&sort=-time`
+    );
+    let data = await res.json();
+    Posts(document.querySelector(".posts"), data);
+  }
+  getDataForPosts(page);
+  const showData = () => {
+    setTimeout(() => {
+      page++;
+      getDataForPosts(page);
+    }, 500);
+  };
+
+  window.addEventListener("scroll", () => {
+    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight === scrollHeight) {
+      showData();
+    }
+  });
+</script>

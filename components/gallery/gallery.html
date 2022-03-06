@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Imgur: The magic of the internet</title>
+    <link rel="stylesheet" href="gallery.css" />
+  </head>
+  <style>
+    body{
+      background-color: rgb(104, 104, 104);
+      color: white
+    }
+    #rightside {
+      width: 50px;
+      padding: 8px;
+    }
+    .updown {
+      border: 1px solid gray;
+      border-radius: 5px;
+    }
+    .outsideupdown {
+      padding: 8px;
+    }
+    .comment {
+      padding-top: 0px;
+    }
+    #container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: stretch;
+      position: relative;
+      padding-top: 24px;
+      margin: 0 auto;
+    }
+  </style>
+  <body>
+    <div id="container">
+      <div id="rightside">
+        <img src="./svgs/diamond.svg" class="arrow outsideupdown" alt="" />
+        <div class="updown">
+          <img src="./svgs/up.svg" class="arrow" alt="" />
+          <p id="upcount" class="arrow leftp"></p>
+          <img
+            src="./svgs/up.svg"
+            class="arrow"
+            alt=""
+            style="transform: rotate(180deg);"
+          />
+          <img src="./svgs/heart.svg" class="arrow" alt="" />
+        </div>
+        <img src="./svgs/share.svg" class="arrow outsideupdown" alt="" />
+        <div class="updown comment">
+          <img src="./svgs/comment.svg" class="arrow" alt="" />
+          <p id="commentcount" class="arrow leftp"></p>
+        </div>
+      </div>
+      <div id="postcontainer">
+        <div id="header">
+          <div class="Gallery-Title">
+              <span ><h1 id="title"></h1></span> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script
+  src="https://kit.fontawesome.com/e425a0bb3a.js"
+  crossorigin="anonymous"
+></script>
+<script>
+  let post = JSON.parse(localStorage.getItem("post"));
+  document.getElementById("upcount").innerText = `${post.upvote_count}`;
+  document.getElementById("title").innerText = `${post.title}`;
+  const getData = async (req, res) => {
+    try {
+      let res = await fetch(
+        `https://api.imgur.com/comment/v1/comments?client_id=546c25a59c58ad7&filter%5Bpost%5D=eq%3A${post.id}&include=account%2Cadconfig&per_page=10&sort=best`
+      );
+      let data = await res.json();
+      let length = data.data.length;
+      document.getElementById("commentcount").innerText = `${length}`;
+      console.log("data:", data.data);
+    } catch (err) {
+      console.log("err:", err);
+    }
+  };
+  getData();
+</script>

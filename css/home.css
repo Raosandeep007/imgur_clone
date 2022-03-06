@@ -1,0 +1,14 @@
+.main-header{
+    height: 400px;
+    background: url("https://s.imgur.com/desktop-assets/desktop-assets/homebg.e52b5cdf24f83bcd55f9f1318855f2ef.png") 50% center / cover no-repeat;
+}
+.message{
+    font-size: 23px;
+    font-family: "Proxima Nova ExtraBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    letter-spacing: 0.6px;
+    color: rgb(174, 216, 234);
+    text-align: center;
+    margin-top: 12px;
+    min-height: 34px;
+    position: relative;
+}
