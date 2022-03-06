@@ -10,7 +10,7 @@ const Posts = (element, data) => {
     "#AB80B8",
     "#BA519F",
     "#FF51BA",
-    "#60AEBB",
+    "#60AEBB"
   ];
   let main = document.createElement("div");
   main.classList.add("mainPosts");
@@ -19,8 +19,7 @@ const Posts = (element, data) => {
     container.classList.add("mainConPost");
     container.addEventListener("click", function () {
       specific(post);
-      console.log("d");
-      window.location.href = "./gallery/gallery.html";
+      window.location.href = "gallery.html";
     });
     let div = document.createElement("div");
     div.classList.add("postDiv");
