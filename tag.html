@@ -14,7 +14,7 @@
       href="https://s.imgur.com/images/favicon-32x32.png"
       sizes="32x32"
     />
-    <title>Document</title>
+    <title></title>
   </head>
   <body>
     <header class="main-header">
@@ -55,6 +55,7 @@
 
   async function getPosts() {
     const pathname = window.location.href.split("?tag=")[1];
+    document.title = `${pathname} Images, Photos, Memes, Gifs, and Pictures | Find the latest on Imgur`;
     loadingAnimation();
     let res = await fetch(
       `https://api.imgur.com/post/v1/posts/t/${pathname}?client_id=546c25a59c58ad7&filter%5Bwindow%5D=week&include=adtiles%2Cadconfig%2Ccover&page=1&sort=-viral`

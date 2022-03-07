@@ -1,6 +1,7 @@
 let post = JSON.parse(localStorage.getItem("post"));
 document.getElementById("upcount").innerText = `${post.upvote_count}`;
 document.getElementById("title").innerText = `${post.title}`;
+document.title = `${post.title}`;
 document.getElementById("viewcount").innerText = `${post.view_count} views`;
 var test = new Date().getTime(post.created_at);
 var test1 = new Date().getTime();
