@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Imgur: The magic of the internet</title>
+    <link rel="stylesheet" href="/css/gallery.css" />
+  </head>
+  <style>
+    body {
+      background-color: hsl(219, 7%, 16%);
+      color: white;
+    }
+    #rightside {
+      width: 50px;
+      padding: 8px;
+      height: 50vh;
+    }
+    .updown {
+      border: 1px solid gray;
+      border-radius: 5px;
+      padding-left: 8px;
+    }
+    .outsideupdown {
+      padding: 8px;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: stretch;
+      position: relative;
+      padding-top: 24px;
+      margin: 0 auto;
+    }
+    #postdisplay {
+      width: 80%;
+      height: 100vh;
+      overflow: scroll;
+    }
+    #postdisplay::-webkit-scrollbar {
+      display: none;
+    }
+    #postimg {
+      width: 100%;
+    }
+    #addcmnt {
+      background-color: rgb(77, 77, 78);
+      width: 80%;
+      height: 70px;
+      color: white;
+      border-radius: 5px;
+    }
+    #comntbtn {
+      border: none;
+      border-radius: 5px;
+      color: white;
+      background-color: gray;
+      cursor: pointer;
+    }
+    #part {
+      width: 80%;
+      margin-left: 0px;
+      color: gray;
+    }
+    #avatar {
+      border-radius: 50%;
+      width: 20px;
+    }
+    #username {
+      color: greenyellow;
+      vertical-align: top;
+    }
+    #cmnttime,
+    #replies {
+      vertical-align: top;
+    }
+    #cmnt {
+      width: 100%;
+    }
+    #card {
+      width: 80%;
+    }
+    #card:hover {
+      background-color: rgba(184, 184, 184, 0.253);
+      width: 80%;
+      border-radius: 5px;
+    }
+    #card span,
+    #cmnt {
+      font-size: 13px;
+    }
+    #cmnt {
+      margin-bottom: 10px;
+    }
+    #votescount {
+      vertical-align: top;
+    }
+  </style>
+  <body>
+    <div id="container">
+      <div id="rightside">
+        <img
+          src="./components/gallery/svgs/diamond.svg"
+          class="arrow outsideupdown"
+          alt=""
+        />
+        <div class="updown">
+          <img src="./components/gallery/svgs/up.svg" class="arrow" alt="" />
+          <p id="upcount" class="arrow leftp"></p>
+          <img
+            src="./components/gallery/svgs/up.svg"
+            class="arrow"
+            alt=""
+            style="transform: rotate(180deg);"
+          />
+          <img src="./components/gallery/svgs/heart.svg" class="arrow" alt="" />
+        </div>
+        <img
+          src="./components/gallery/svgs/share.svg"
+          class="arrow outsideupdown"
+          alt=""
+        />
+        <div class="commentcountleft updown">
+          <img src="./components/gallery/svgs/comments.svg" alt="" />
+          <p id="commentcount"></p>
+        </div>
+      </div>
+      <div id="postcontainer">
+        <div id="header">
+          <span><h1 id="title"></h1></span>
+          <span
+            ><span id="viewcount"></span> : <span id="timecount"></span
+          ></span>
+        </div>
+        <div id="postdisplay">
+          <img src="" id="postimg" alt="" />
+        </div>
+        <div id="commentadd">
+          <textarea
+            name=""
+            id="addcmnt"
+            cols="30"
+            rows="10"
+            placeholder="Write a comment"
+          ></textarea>
+          <div>
+            <button id="comntbtn">Post</button>
+          </div>
+        </div>
+        <div id="showcomment">
+          <h4 id="comntcount"></h4>
+          <hr id="part" />
+          <div id="displaycmnt"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  let post = JSON.parse(localStorage.getItem("post"));
+  document.getElementById("upcount").innerText = `${post.upvote_count}`;
+  document.getElementById("title").innerText = `${post.title}`;
+  document.getElementById("viewcount").innerText = `${post.view_count} views`;
+  var test = new Date().getTime(post.created_at);
+  var test1 = new Date().getTime();
+  var diff = test1 - test;
+  var diff_as_date = new Date(diff);
+  document.getElementById(
+    "timecount"
+  ).innerText = `${diff_as_date.getHours()}h`;
+  document.getElementById("postimg").src = `${post.cover.url}`;
+  const getData = async (req, res) => {
+    try {
+      let res = await fetch(
+        `https://api.imgur.com/comment/v1/comments?client_id=546c25a59c58ad7&filter%5Bpost%5D=eq%3A${post.id}&include=account%2Cadconfig`
+      );
+      let data = await res.json();
+      let length = data.data.length;
+      document.getElementById("commentcount").innerText = `${length}`;
+      displaycomments(data.data);
+    } catch (err) {
+      console.log("err:", err);
+    }
+  };
+  getData();
+  function displaycomments(comments) {
+    let displaycmnt = document.getElementById("displaycmnt");
+    console.log(comments);
+    document.getElementById(
+      "comntcount"
+    ).innerText = `${comments.length} COMMENTS`;
+    comments.map((comment) => {
+      let card = document.createElement("div");
+      card.id = "card";
+
+      let cmntuser = document.createElement("div");
+      let avatar = document.createElement("img");
+      avatar.src = `${comment.account.avatar}`;
+      avatar.id = "avatar";
+      let username = document.createElement("span");
+      username.innerText = `${comment.account.username}`;
+      username.id = "username";
+      let cmnttime = document.createElement("span");
+      var test = new Date().getTime(comment.created_at);
+      var test1 = new Date().getTime();
+      var diff = test1 - test;
+      var diff_as_date = new Date(diff);
+      cmnttime.innerText = `${diff_as_date.getHours()}h`;
+      cmnttime.id = "cmnttime";
+      cmntuser.append(avatar, username, "   ", cmnttime);
+
+      let cmnt = document.createElement("div");
+      cmnt.innerText = `${comment.comment}`;
+      cmnt.id = "cmnt";
+
+      let votescount = document.createElement("div");
+      votescount.id = "votescount";
+      let upvotes = document.createElement("img");
+      upvotes.src = "./components/gallery/svgs/up.svg";
+      upvotes.classList = "arrowofcmnt";
+      let downvotes = document.createElement("img");
+      downvotes.src = "./components/gallery/svgs/up.svg";
+      downvotes.classList = "arrowofcmnt";
+      downvotes.style = "transform: rotate(180deg)";
+      let votetotal = document.createElement("span");
+      votetotal.innerText = `${comment.upvote_count}`;
+      votetotal.id = "votetotal";
+
+      let replies = document.createElement("span");
+      replies.innerText = `+ ${comment.comments.length} replies`;
+      replies.id = "replies";
+      votescount.append(upvotes, votetotal, downvotes, replies);
+
+      card.append(cmntuser, cmnt, votescount);
+
+      let hr = document.createElement("hr");
+      hr.id = "part";
+
+      displaycmnt.append(card, hr);
+    });
+  }
+</script>
