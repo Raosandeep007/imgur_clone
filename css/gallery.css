@@ -36,9 +36,9 @@ body {
 #postdisplay {
   width: 80%;
 }
+
 #postcontainer {
   width: 60%;
-
   height: 100vh;
   overflow: scroll;
 }
@@ -107,4 +107,5 @@ body {
 .posts {
   margin-left: 10px;
   overflow-x: inherit;
+  margin-top: 500px;
 }

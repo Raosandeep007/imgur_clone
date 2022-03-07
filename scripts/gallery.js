@@ -7,7 +7,25 @@ var test1 = new Date().getTime();
 var diff = test1 - test;
 var diff_as_date = new Date(diff);
 document.getElementById("timecount").innerText = `${diff_as_date.getHours()}h`;
-document.getElementById("postimg").src = `${post.cover.url}`;
+
+let divappend = document.getElementById("postdisplay");
+let content;
+if (
+  post.cover.ext === "jpeg" ||
+  post.cover.ext === "png" ||
+  post.cover.ext === "jpg"
+) {
+  content = document.createElement("img");
+  content.src = post.cover.url;
+  content.style = "width:100%";
+  divappend.append(content);
+} else {
+  content = document.createElement("div");
+  content.innerHTML = `<video class="postVideo" autoplay loop muted playsinline >
+     <source src="${post.cover.url}" type="${post.cover.mime_type}">
+     </video>`;
+  divappend.append(content);
+}
 
 const getData = async (req, res) => {
   try {
