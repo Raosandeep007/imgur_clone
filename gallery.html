@@ -6,13 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Imgur: The magic of the internet</title>
     <link rel="stylesheet" href="/css/gallery.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/posts.css" />
   </head>
   <style>
     body {
       background-color: hsl(219, 7%, 16%);
       color: white;
+      font-family: Proxima Nova Regular, Helvetica Neue, Helvetica, Arial,
+        sans-serif;
     }
     #rightside {
+      margin-top: 80px;
       width: 50px;
       padding: 8px;
       height: 50vh;
@@ -38,10 +43,14 @@
     }
     #postdisplay {
       width: 80%;
+    }
+    #postcontainer {
+      width: 60%;
+
       height: 100vh;
       overflow: scroll;
     }
-    #postdisplay::-webkit-scrollbar {
+    #postcontainer::-webkit-scrollbar {
       display: none;
     }
     #postimg {
@@ -60,6 +69,10 @@
       color: white;
       background-color: gray;
       cursor: pointer;
+    }
+    #title {
+      width: 80%;
+      word-wrap: break-word;
     }
     #part {
       width: 80%;
@@ -101,6 +114,7 @@
     }
   </style>
   <body>
+    <div id="navbar"></div>
     <div id="container">
       <div id="rightside">
         <img
@@ -131,7 +145,7 @@
       </div>
       <div id="postcontainer">
         <div id="header">
-          <span><h1 id="title"></h1></span>
+          <span><h2 id="title"></h2></span>
           <span
             ><span id="viewcount"></span> : <span id="timecount"></span
           ></span>
@@ -158,9 +172,37 @@
         </div>
       </div>
     </div>
+    <div class="posts"></div>
   </body>
 </html>
-<script>
+<script type="module">
+  import Posts from "./components/posts.js";
+  import Navbar from "./components/navbar.js";
+
+  document.getElementById("navbar").innerHTML = Navbar();
+
+  let page = 1;
+  async function getDataForPosts(page) {
+    let res = await fetch(
+      `https://api.imgur.com/post/v1/posts?client_id=546c25a59c58ad7&filter%5Bsection%5D=eq%3Ahot&include=adtiles%2Cadconfig%2Ccover%2Cviral&location=desktophome&page=${page}&sort=-time`
+    );
+    let data = await res.json();
+    Posts(document.querySelector(".posts"), data);
+  }
+  getDataForPosts(page);
+  const showData = () => {
+    setTimeout(() => {
+      page++;
+      getDataForPosts(page);
+    }, 500);
+  };
+
+  window.addEventListener("scroll", () => {
+    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight === scrollHeight) {
+      showData();
+    }
+  });
   let post = JSON.parse(localStorage.getItem("post"));
   document.getElementById("upcount").innerText = `${post.upvote_count}`;
   document.getElementById("title").innerText = `${post.title}`;
@@ -188,8 +230,6 @@
   };
   getData();
   function displaycomments(comments) {
-    let displaycmnt = document.getElementById("displaycmnt");
-    console.log(comments);
     document.getElementById(
       "comntcount"
     ).innerText = `${comments.length} COMMENTS`;
