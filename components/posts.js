@@ -1,4 +1,5 @@
-const Posts = (element, data, page = null) => {
+const Posts = (element, data) => {
+  console.log(data);
   let colors = [
     "#4D549A",
     "#328D67",
@@ -13,14 +14,13 @@ const Posts = (element, data, page = null) => {
   ];
   let main = document.createElement("div");
   main.classList.add("mainPosts");
-  if (page) {
-    main.classList.add(`post-page-${page}`);
-    main.classList.add("none");
-  }
-
   data.map((post) => {
     const container = document.createElement("div");
     container.classList.add("mainConPost");
+    container.addEventListener("click", function () {
+      specific(post);
+      window.location.href = "gallery.html";
+    });
     let div = document.createElement("div");
     div.classList.add("postDiv");
     div.style.background = colors[Math.floor(Math.random() * 9)];
@@ -33,14 +33,20 @@ const Posts = (element, data, page = null) => {
       content = document.createElement("img");
       content.src = post.cover.url;
     } else {
-      content = document.createElement("div");
-      content.innerHTML = `<video class="postVideo" autoplay loop muted playsinline >
-     <source src="${post.cover.url}" type="${post.cover.mime_type}">
-     </video>`;
+      content = document.createElement("video");
+      content.classList.add("postVideo");
+      content.setAttribute("muted", "");
+      content.setAttribute("autoplay", "");
+      let source = document.createElement("source");
+      source.src = post.cover.url;
+      source.type = post.cover.mime_type;
+      content.append(source);
     }
     div.classList.add(
       post.cover.width > post.cover.height ? "vertical" : "horizontal"
     );
+    let Text = document.createElement("div");
+    let h1 = document.createElement("h1");
     let postInfo = document.createElement("div");
     postInfo.innerHTML = `
      <div class="postInfo">
@@ -67,5 +73,8 @@ const Posts = (element, data, page = null) => {
     main.append(container);
   });
   element.appendChild(main);
+  function specific(post) {
+    localStorage.setItem("post", JSON.stringify(post));
+  }
 };
 export default Posts;

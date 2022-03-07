@@ -26,25 +26,6 @@
     <main>
       <div class="posts"></div>
     </main>
-    <div class="loadingDiv none">
-      <div
-        class="loading"
-        style="font-size: 200px; --duration: 2s; --num-dot: 10;"
-      >
-        <!--  index start from 0  -->
-        <div style="--index: 0;"></div>
-        <div style="--index: 1;"></div>
-        <div style="--index: 2;"></div>
-        <div style="--index: 3;"></div>
-        <div style="--index: 4;"></div>
-        <div style="--index: 5;"></div>
-        <div style="--index: 6;"></div>
-        <div style="--index: 7;"></div>
-        <div style="--index: 8;"></div>
-        <div style="--index: 9;"></div>
-        <!--  index ended with (var(--num-dot) - 1)  -->
-      </div>
-    </div>
   </body>
 </html>
 <script
@@ -64,16 +45,13 @@
   }
   getDataForTags();
   document.querySelector(".navbar").innerHTML = Navbar();
-  var page = 1;
+  let page = 1;
   async function getDataForPosts(page) {
-    loadingAnimation(page);
     let res = await fetch(
       `https://api.imgur.com/post/v1/posts?client_id=546c25a59c58ad7&filter%5Bsection%5D=eq%3Ahot&include=adtiles%2Cadconfig%2Ccover%2Cviral&location=desktophome&page=${page}&sort=-time`
     );
     let data = await res.json();
-    if (data.length > 40)
-      Posts(document.querySelector(".posts"), data.splice(0, 40), page);
-    else Posts(document.querySelector(".posts"), data, page);
+    Posts(document.querySelector(".posts"), data);
   }
   getDataForPosts(page);
   const showData = () => {
@@ -89,19 +67,4 @@
       showData();
     }
   });
-  document.querySelector(
-    ".main-header"
-  ).style.background = `url("https://s.imgur.com/desktop-assets/desktop-assets/homebg.e52b5cdf24f83bcd55f9f1318855f2ef.png") 50% center / cover no-repeat`;
-
-  function loadingAnimation(page) {
-    let loading = document.querySelector(".loadingDiv");
-    loading.classList.remove("none");
-    setTimeout(() => {
-      loading.classList.add("none");
-      loading.classList.remove("add");
-      document.querySelector(`.post-page-${page}`).classList.remove("none");
-    }, 2000);
-  }
 </script>
-<script src="./scripts/search.js"></script>
-<script src="./scripts/navStick.js"></script>

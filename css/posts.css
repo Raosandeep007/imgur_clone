@@ -1,3 +1,45 @@
+/* .postDiv {
+  border: 1px solid red;
+}
+.postDiv img {
+  width: 100%;
+}
+.posts {
+  display: grid;
+  align-items: flex-start;
+  justify-content: center;
+  grid-template-columns: 240px 240px 240px 240px 240px 240px;
+  gap: 20px;
+  grid-auto-flow: dense;
+} */
+
+/* .postDiv {
+  border: 1px solid red;
+}
+.postDiv img {
+  width: 100%;
+  object-fit: cover;
+  box-shadow: 0 2px 16px rgb(88, 88, 88);
+}
+.posts {
+  display: grid;
+  grid-gap: 20px;
+ 
+  grid-auto-rows: 120px;
+  grid-auto-flow: dense;
+}*/
+/* .horizontal {
+  grid-row: 1 / 2;
+}
+.vertical {
+  grid-column: 1;
+} */
+
+/* div {
+  max-width: 1200px;
+  margin: 0 auto;
+} */
+
 .mainPosts {
   width: fit-content;
   margin: auto;
@@ -9,20 +51,6 @@
   column-count: 6;
   column-gap: 20px;
 }
-@media only screen and (max-width: 1600px) {
-  .mainPosts {
-    -webkit-column-count: 5;
-    -moz-column-count: 5;
-    column-count: 5;
-  }
-}
-@media only screen and (max-width: 1400px) {
-  .mainPosts {
-    -webkit-column-count: 3;
-    -moz-column-count: 3;
-    column-count: 3;
-  }
-}
 
 .postDiv {
   width: 240px;
@@ -31,7 +59,7 @@
   max-height: 300px;
   border-radius: 3px;
   overflow: hidden;
-  margin-bottom: 90px;
+  margin-bottom: 80px;
   box-shadow: rgb(0 0 0 / 40%) 0px 2px 4px 0px;
   background-color: rgb(46, 48, 53);
   transition: box-shadow 0.25s ease 0s;
@@ -45,7 +73,7 @@
   width: 100%;
 }
 .postVideo {
-  height: auto;
+  height: 70px;
   width: 100%;
 }
 .mainConPost {
@@ -56,7 +84,7 @@
   flex-direction: column;
   position: absolute;
   justify-content: center;
-  bottom: -72px;
+  bottom: -40px;
   border-radius: 0px 0px 3px 3px;
   left: 0;
   width: 100%;
@@ -99,11 +127,4 @@
 }
 .postInfo div p:hover {
   opacity: 905;
-}
-
-.posts {
-  position: absolute;
-  top: 370px;
-  left: 50%;
-  transform: translateX(-50%);
 }

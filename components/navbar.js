@@ -1,11 +1,9 @@
 import Logo from "../assets/logo.js";
 const Navbar = () => {
-  return `
+return `
 <nav class="main-navbar">
   <div class="navLogo-left">
-  <a href="/">
     ${Logo}
-    </a>
     <a class="upload-btn btn" href="/upload"><img style="margin-right:10px;"
         src="https://s.imgur.com/desktop-assets/desktop-assets/icon-new-post.13ab64f9f36ad8f25ae3544b350e2ae1.svg"><span
         class="newPostLabel">New post</span></a>
@@ -20,7 +18,6 @@ const Navbar = () => {
         <img src="https://s.imgur.com/desktop-assets/desktop-assets/icon-search.8d0f9b564a4659d48d8eca38b968a7f2.svg">
       </button>
     </form>
-    <div class="searchResult none" ></div>
   </div>
   <div class="account-right">
     <a href="" class="btn add-free-btn">Go Ad-Free</a>
