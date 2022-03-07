@@ -22,7 +22,7 @@ if (
   divappend.append(content);
 } else {
   content = document.createElement("div");
-  content.innerHTML = `<video class="postVideo" autoplay loop muted playsinline controls>
+  content.innerHTML = `<video class="postVideo" autoplay playsinline controls>
      <source src="${post.cover.url}" type="${post.cover.mime_type}">
      </video>`;
   divappend.append(content);
