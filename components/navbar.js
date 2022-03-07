@@ -57,7 +57,7 @@ const Navbar = () => {
             </g>
           </svg><span class="Button-label"></span></a></div>
     </div>
-    <div class="Dropdown-title"><span>yadavsandeep007</span><span class="UserAvatar NavbarAvatar-navbar NavbarAvatar"
+    <div class="Dropdown-title"><span>yadavsandeep</span><span class="UserAvatar NavbarAvatar-navbar NavbarAvatar"
         style="background-image: url('https://i.imgur.com/cvL0J2f_d.png?maxwidth=290&fidelity=grand')"></span></div>
   </div>
 </nav>
